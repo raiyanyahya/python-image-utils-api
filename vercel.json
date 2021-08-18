@@ -10,10 +10,8 @@
             "use": "@vercel/python"
         }
     ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "/"
-        }
-    ]
+    "routes": [{
+        "src": "/api/(.*)",
+        "dest": "api/index.py"
+    }]
 }
