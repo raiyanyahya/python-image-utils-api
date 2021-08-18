@@ -1,0 +1,19 @@
+{
+    "version": 2,
+	"github": {
+    "enabled": false,
+    "silent": true
+  },
+    "builds": [
+        {
+            "src": "./index.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
+}
