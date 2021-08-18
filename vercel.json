@@ -6,7 +6,7 @@
   },
     "builds": [
         {
-            "src": "index.py",
+            "src": "./api/index.py",
             "use": "@vercel/python"
         }
     ],
