@@ -1,24 +1,11 @@
-from flask import Flask
+from bottle import Bottle, run
 
+app = Bottle()
 
-app = Flask(__name__)
-
+@app.route('/hello')
+def hello():
+    return "Hello World!"
 
 @app.route('/')
-def home():
-    return 'Home Page Route'
-
-
-@app.route('/about')
-def about():
-    return 'About Page Route'
-
-
-@app.route('/portfolio')
-def portfolio():
-    return 'Portfolio Page Route'
-
-
-@app.route('/contact')
-def contact():
-    return 'Contact Page Route'
+def hellotoo():
+    return "Hello World too!"
