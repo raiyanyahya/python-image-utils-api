@@ -10,8 +10,7 @@ def hello():
 def hellotoo():
     return "base route"
 
-
-@get('/login') # or @route('/login')
+@app.route('/login', method=['GET'])
 def login():
     return '''
         <form action="/login" method="post">
@@ -21,7 +20,8 @@ def login():
         </form>
     '''
 
-@post('/login') # or @route('/login', method='POST')
+# or @route('/login', method='POST')
+@app.route('/login', method=['POST'])
 def login():
     body = request.json
     return {'puppet': str(body)}
