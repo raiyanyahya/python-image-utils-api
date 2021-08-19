@@ -13,13 +13,13 @@ class ImageUtils:
         with BytesIO() as f:
            im = im.convert("RGB")
            im.save(f, format='JPEG')
-           return base64.encodebytes(f.getvalue())
+           return str(base64.encodebytes(f.getvalue()))
 
     @staticmethod
     def convertPNG(im):
         with BytesIO() as f:
            im.save(f, format='PNG')
-           return base64.encodebytes(f.getvalue())
+           return str(base64.encodebytes(f.getvalue()))
 
 def return_response(msg, code):
     response.status = code
@@ -36,7 +36,7 @@ def convert_image():
             response.status = 200
             return json.dumps({"image": getattr(ImageUtils, "convert" + iformat)(img)})
         except Exception as e:
-           print("Server crash" + str(e))
+           print("Server crash " + str(e))
            return  return_response("Server crash please report this error", 400)
     else:
         response.status = 400
