@@ -58,7 +58,6 @@ def convert_image():
         return json.dumps({"message": "No image found"})
    
 @app.route("/imgd", methods=["POST","GET"])
-@enable_cors
 def image_detail():
     if request.json['image']:
         try:
