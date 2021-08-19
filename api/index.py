@@ -27,7 +27,8 @@ def return_response(msg, code):
 
 @app.route("/", methods=["POST","GET"])
 def ping():
-    return "OK", 200
+    return "OK"
+
 @app.route("/imgcnv", methods=["POST","GET"])
 def convert_image():
     if request.json['image'] and request.json['to']:
