@@ -42,7 +42,7 @@ def convert_image():
         try:
             img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
             response.status = 200
-            return json.dumps({"image": getattr(ImageUtils, "convert" + iformat)(img)})
+            return json.dumps(str({"image": getattr(ImageUtils, "convert" + iformat)(img)}))
         except Exception as e:
            print("Server crash " + str(e))
            return  return_response("Server crash please report this error", 400)
