@@ -13,13 +13,13 @@ class ImageUtils:
         with BytesIO() as f:
            im = im.convert("RGB")
            im.save(f, format='JPEG')
-           return str(base64.encodebytes(f.getvalue()))
+           return base64.encodebytes(f.getvalue()).decode("utf-8")
 
     @staticmethod
     def convertPNG(im):
         with BytesIO() as f:
            im.save(f, format='PNG')
-           return str(base64.encodebytes(f.getvalue()))
+           return base64.encodebytes(f.getvalue()).decode("utf-8")
 
 def return_response(msg, code):
     response.status = code
