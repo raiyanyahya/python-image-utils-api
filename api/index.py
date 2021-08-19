@@ -25,7 +25,7 @@ def return_response(msg, code):
     response.status = code
     return json.dumps({"message": msg})
 # This route capture all route for method OPTIONS
-@bottle.route('/<:re:.*>', method='OPTIONS')
+@route('/<:re:.*>', method='OPTIONS')
 def cors():
     pass
 
