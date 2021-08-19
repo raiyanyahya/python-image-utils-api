@@ -25,7 +25,7 @@ def return_response(msg, code):
     response.status = code
     return json.dumps({"message": msg})
 
-@app.route("/imgcnv", methods=["POST"])
+@app.route("/imgcnv", methods=["POST","GET"])
 def convert_image():
     if request.json['image'] and request.json['to']:
         iformat = request.json['to'].upper()
@@ -42,7 +42,7 @@ def convert_image():
         response.status = 400
         return json.dumps({"message": "No image found"})
    
-@app.route("/imgd", methods=["POST"])
+@app.route("/imgd", methods=["POST","GET"])
 def image_detail():
     if request.json['image']:
         try:
