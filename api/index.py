@@ -5,7 +5,7 @@ import base64
 import json
 
 app = Bottle()
-
+app.add_hook('after_request', apply_cors)
 class ImageUtils:
 
     @staticmethod
@@ -25,7 +25,7 @@ def return_response(msg, code):
     response.status = code
     return json.dumps({"message": msg})
 # This route capture all route for method OPTIONS
-@route('/<:re:.*>', method='OPTIONS')
+@app.route('/<:re:.*>', method='OPTIONS')
 def cors():
     pass
 
