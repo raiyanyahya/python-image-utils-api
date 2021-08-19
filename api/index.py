@@ -2,6 +2,7 @@ from bottle import Bottle, get, post, request
 from PIL import Image
 from io import BytesIO
 import base64
+import json
 
 app = Bottle()
 
@@ -40,7 +41,7 @@ def image_detail():
     if request.json['image']:
         try:
             img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
-            return jsonify({'msg': 'success', 'size': [img.width, img.height], 'mode': img.mode, 'format': img.format}) 
+            return json.dumps({'msg': 'success', 'size': [img.width, img.height], 'mode': img.mode, 'format': img.format}) 
         except Exception as e:
             print("Server crash" + str(e))
             return "Server crash please report this error.", 400
