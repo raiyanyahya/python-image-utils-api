@@ -24,6 +24,23 @@ class ImageUtils:
 def return_response(msg, code):
     response.status = code
     return json.dumps({"message": msg})
+# This route capture all route for method OPTIONS
+@bottle.route('/<:re:.*>', method='OPTIONS')
+def cors():
+    pass
+
+headers = ['Origin', 'Accept', 'Content-Type',
+           'X-Requested-With', 'X-CSRF-Token',
+           'Authorization']
+HEADERS = ', '.join((headers + [h.lower() for h in headers]))
+
+# For all request I add cors headers
+def apply_cors():
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, DELETE, PUT, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = HEADERS
+
+app.add_hook('after_request', apply_cors)
 
 @app.route("/", methods=["POST","GET"])
 def ping():
