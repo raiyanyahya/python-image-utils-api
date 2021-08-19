@@ -1,4 +1,6 @@
-from bottle import Bottle, request, response
+from bottle import Bottle, request, response, post
+
+
 from PIL import Image
 from io import BytesIO
 import base64
@@ -6,21 +8,7 @@ import json
 
 app = Bottle()
 
-@app.route('/<:re:.*>', method='OPTIONS')
-def cors():
-    pass
-
-headers = ['Origin', 'Accept', 'Content-Type',
-           'X-Requested-With', 'X-CSRF-Token',
-           'Authorization']
-HEADERS = ', '.join((headers + [h.lower() for h in headers]))
-
-# For all request I add cors headers
-def apply_cors():
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, DELETE, PUT, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = HEADERS
-app.add_hook('after_request', apply_cors)
+ 
 class ImageUtils:
 
     @staticmethod
@@ -40,11 +28,12 @@ def return_response(msg, code):
     response.status = code
     return json.dumps({"message": msg})
 
-@app.route("/", methods=["POST","GET"])
-def ping():
-    return "OK"
 
-@app.route("/imgcnv", methods=["POST","GET"])
+@app.post('/')
+def ping():
+    return {}
+
+@app.post("/imgcnv")
 def convert_image():
     if request.json['image'] and request.json['to']:
         iformat = request.json['to'].upper()
@@ -61,12 +50,15 @@ def convert_image():
         response.status = 400
         return json.dumps({"message": "No image found"})
    
-@app.route("/imgd", methods=["POST","GET"])
+@app.post("/imgd")
 def image_detail():
+    
     if request.json['image']:
         try:
+            print("here")
             img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
             response.status = 200
+            
             return json.dumps({'msg': 'success', 'size': [img.width, img.height], 'mode': img.mode, 'format': img.format}) 
         except Exception as e:
             print("Server crash" + str(e))
