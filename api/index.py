@@ -1,11 +1,11 @@
-from bottle import Bottle, request
+from bottle import Bottle, request, reponse
 from PIL import Image
 from io import BytesIO
 import base64
 import json
 
 app = Bottle()
-
+response.content_type = 'application/json'
 class ImageUtils:
 
     @staticmethod
@@ -21,29 +21,36 @@ class ImageUtils:
            im.save(f, format='PNG')
            return base64.encodebytes(f.getvalue())
 
+def return_response(msg, code):
+    response.status = code
+    return json.dumps({"message": msg})
+
 @app.route("/imgcnv", methods=["POST"])
 def convert_image():
     if request.json['image'] and request.json['to']:
-        format = request.json['to']
-        img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
+        iformat = request.json['to'].upper()
+        if iformat not in ["JPG","PNG"]:
+            return return_response("Unsupported format: " + iformat, 400)
         try:
-           return getattr(ImageUtils, "convert" + format.upper())(img)
-        except AttributeError as e:
-           return "Unsupported format: " + format , 400
+            img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
+            response.status = 200
+            return json.dumps("image": getattr(ImageUtils, "convert" + iformat)(img))
         except Exception as e:
            print("Server crash" + str(e))
-           return "Server crash please report this error.", 400
+           return  return_response("Server crash please report this error", 400)
     else:
-        return "No image found", 400
+        response.status = 400
+        return json.dumps({"message": "No image found"})
    
 @app.route("/imgd", methods=["POST"])
 def image_detail():
     if request.json['image']:
         try:
             img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
+            response.status = 200
             return json.dumps({'msg': 'success', 'size': [img.width, img.height], 'mode': img.mode, 'format': img.format}) 
         except Exception as e:
             print("Server crash" + str(e))
-            return "Server crash please report this error.", 400
+            return return_response("Server crash please report this error",400)
     else:
-        return "No image found", 400
+        return return_response("[image] key missing",400)
