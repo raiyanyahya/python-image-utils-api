@@ -5,20 +5,6 @@ import base64
 import json
 
 app = Bottle()
-response.content_type = 'application/json'
-# the decorator
-def enable_cors(fn):
-    def _enable_cors(*args, **kwargs):
-        # set CORS headers
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = '*'
-
-        if request.method != 'OPTIONS':
-            # actual request; reply with the actual response
-            return fn(*args, **kwargs)
-
-    return _enable_cors
 
 class ImageUtils:
 
@@ -40,7 +26,6 @@ def return_response(msg, code):
     return json.dumps({"message": msg})
 
 @app.route("/imgcnv", methods=["POST","GET"])
-@enable_cors
 def convert_image():
     if request.json['image'] and request.json['to']:
         iformat = request.json['to'].upper()
