@@ -26,7 +26,7 @@ class ImageUtils:
 
 def return_response(msg, code):
     response.status = code
-    return json.dumps({"message": msg})
+    return json.dumps(str({"message": msg}))
 
 
 @app.post('/')
@@ -47,8 +47,7 @@ def convert_image():
            print("Server crash " + str(e))
            return  return_response("Server crash please report this error", 400)
     else:
-        response.status = 400
-        return json.dumps({"message": "No image found"})
+        return return_response("No image found",400)
    
 @app.post("/imgd")
 def image_detail():
@@ -59,7 +58,7 @@ def image_detail():
             img = Image.open(BytesIO(base64.b64decode(request.json['image'])))
             response.status = 200
             
-            return json.dumps({'msg': 'success', 'size': [img.width, img.height], 'mode': img.mode, 'format': img.format}) 
+            return json.dumps(str({'msg': 'success', 'size': [img.width, img.height], 'mode': img.mode, 'format': img.format}) )
         except Exception as e:
             print("Server crash" + str(e))
             return return_response("Server crash please report this error",400)
