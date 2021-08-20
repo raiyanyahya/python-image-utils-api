@@ -1,15 +1,13 @@
-from bottle import Bottle, request, response, post , BaseRequest
-BaseRequest.MEMFILE_MAX = 1024 * 1024 * 10
-
-
+from bottle import Bottle, request, response, BaseRequest
 from PIL import Image
 from io import BytesIO
 import base64
 import json
+import os
 
 app = Bottle()
+BaseRequest.MEMFILE_MAX = 1024 * 1024 * 10
 
- 
 class ImageUtils:
 
     @staticmethod
@@ -29,12 +27,23 @@ def return_response(msg, code):
     response.status = code
     return json.dumps(str({"message": msg}))
 
+def require_header(fn):
+    def check_key(**kwargs):   
+        header_value = request.headers.get("x-rapidapi-key")
+
+        if header_value ==  os.getenv('KEY'):
+            return fn(**kwargs)
+        else:
+            return return_response("Please authorize",403)
+
+    return check_key
 
 @app.get('/')
 def ping():
     return {}
 
 @app.post("/imgcnv")
+@require_header
 def convert_image():
     if request.json['image'] and request.json['to']:
         iformat = request.json['to'].upper()
@@ -51,6 +60,7 @@ def convert_image():
         return return_response("No image found",400)
    
 @app.post("/imgd")
+@require_header
 def image_detail():
     
     if request.json['image']:
