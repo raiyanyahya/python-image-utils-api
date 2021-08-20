@@ -30,7 +30,7 @@ def return_response(msg, code):
     return json.dumps(str({"message": msg}))
 
 
-@app.post('/')
+@app.get('/')
 def ping():
     return {}
 
