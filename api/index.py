@@ -1,4 +1,5 @@
-from bottle import Bottle, request, response, post
+from bottle import Bottle, request, response, post , BaseRequest
+BaseRequest.MEMFILE_MAX = 1024 * 1024 * 10
 
 
 from PIL import Image
