@@ -29,7 +29,7 @@ def return_response(msg, code):
 
 def require_header(fn):
     def check_key(**kwargs):   
-        header_value = request.headers.get("x-rapidapi-key")
+        header_value = request.headers.get("X-RapidAPI-Proxy-Secret")
 
         if header_value ==  os.getenv('KEY'):
             return fn(**kwargs)
