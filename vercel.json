@@ -10,17 +10,5 @@
             "use": "@vercel/python"
         }
     ],
-    "rewrites": [
-        {
-          "source": "/*)",
-          "has": [
-            {
-              "type": "header",
-              "key": "x-rapidapi-key"
-            }
-          ],
-          "destination": "/uk/:path*"
-        }
-      ],
     "routes": [{"src": "/(.*)", "dest": "api/index.py"}]
 }
